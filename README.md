@@ -1,4 +1,4 @@
-# LocalizedDecimal
+# LocalizeDecimal
 
 A gem for localizing decimal numbers in ActiveModel (and any other ruby class
 having attributes accessible with getters and setters).
@@ -9,7 +9,7 @@ having attributes accessible with getters and setters).
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'localized_decimal'
+gem 'localize_decimal'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install localized_decimal
+    $ gem install localize_decimal
 
 
 ### Configuration
@@ -71,7 +71,7 @@ product.price                  # => 23.4
 product.price_localized        # => "23,4"
 ```
 
-To use LocalizedDecimal in a class that does not coerce attributes by itself,
+To use LocalizeDecimal in a class that does not coerce attributes by itself,
 you can use the built in coercion:
 
 ```ruby
@@ -96,7 +96,7 @@ product.price.to_s             # => "71.3"
 
 ### Validator
 
-The LocalizedDecimal validator can be used as every other ActiveModel
+The LocalizeDecimal validator can be used as every other ActiveModel
 validator.
 
 ```ruby

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module LocalizedDecimal
+module LocalizeDecimal
   RSpec.describe Concern do
     let(:model) { TestClass.new(test_decimal: 14.2) }
 

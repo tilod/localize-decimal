@@ -1,4 +1,4 @@
-module LocalizedDecimal
+module LocalizeDecimal
   module Concern
     extend ActiveSupport::Concern
 

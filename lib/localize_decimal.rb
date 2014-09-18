@@ -1,11 +1,11 @@
 require "active_model"
 require "active_support/concern"
 
-require "localized_decimal/version"
+require "localize_decimal/version"
 
-require "localized_decimal/concern"
+require "localize_decimal/concern"
 require "localized_decimal_validator"
 
-module LocalizedDecimal
+module LocalizeDecimal
   # Your code goes here...
 end

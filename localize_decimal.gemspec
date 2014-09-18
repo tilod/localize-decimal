@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'localized_decimal/version'
+require 'localize_decimal/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "localized_decimal"
-  spec.version       = LocalizedDecimal::VERSION
+  spec.name          = "localize_decimal"
+  spec.version       = LocalizeDecimal::VERSION
   spec.authors       = ["Tilo Dietrich"]
   spec.email         = ["tilo.dietrich@posteo.de"]
   spec.summary       = %q{Localize decimal attributes in ActiveModel}

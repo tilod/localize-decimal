@@ -1,4 +1,4 @@
-require "localized_decimal"
+require "localize_decimal"
 
 require "bigdecimal"
 require "pry"
@@ -30,7 +30,7 @@ end
 
 class TestClass
   include ActiveModel::Model
-  include LocalizedDecimal::Concern
+  include LocalizeDecimal::Concern
 
   attr_accessor :test_decimal, :test_decimal_2,
                 :test_coerce_float, :test_coerce_big_decimal
