@@ -15,17 +15,17 @@ module LocalizeDecimal
       def localize_decimal(*attributes, coerce: false)
         attributes.each do |attribute|
           define_method "#{attribute}_localized" do
-            send(attribute).to_s.gsub(".", localized_number_separator)
+            send(attribute).to_s.tr(".", localized_number_separator)
           end
 
           if coerce
             define_method "#{attribute}_localized=" do |value|
-              localized_value = value.to_s.gsub(localized_number_separator, ".")
+              localized_value = value.to_s.tr(localized_number_separator, ".")
               send("#{attribute}=", send(coerce.to_s, localized_value))
             end
           else
             define_method "#{attribute}_localized=" do |value|
-              localized_value = value.to_s.gsub(localized_number_separator, ".")
+              localized_value = value.to_s.tr(localized_number_separator, ".")
               send("#{attribute}=", localized_value)
             end
           end
