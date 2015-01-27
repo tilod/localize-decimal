@@ -37,6 +37,22 @@ RSpec.describe LocalizedDecimalValidator do
       expect(model).not_to be_valid
       expect(model.errors[:test_decimal_localized].size).to eq 1
     end
+
+    it 'has a translated error message' do
+      # TODO Is there a better way to stub this? That's awful...
+      allow(I18n)
+        .to receive(:translate)
+        .with(:test_class, {:scope=>[:activemodel, :models], :count=>1, :default=>["Test class"]})
+        .and_call_original
+      allow(I18n)
+        .to receive(:translate)
+        .with(any_args)
+        .and_return("test error message")
+
+      model.test_decimal_localized = "wrong"
+      expect(model).not_to be_valid
+      expect(model.errors[:test_decimal_localized]).to eq ["test error message"]
+    end
   end
 
 
@@ -44,6 +60,14 @@ RSpec.describe LocalizedDecimalValidator do
     it 'uses . as separator' do
       model.test_decimal_localized = "389.01"
       expect(model).to be_valid
+    end
+
+    describe 'the error message' do
+      it 'is :not_a_number' do
+        model.test_decimal_localized = "wrong"
+        expect(model).not_to be_valid
+        expect(model.errors[:test_decimal_localized]).to eq ["is not a number"]
+      end
     end
   end
 end
