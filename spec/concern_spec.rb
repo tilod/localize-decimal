@@ -53,7 +53,7 @@ module LocalizeDecimal
 
       context 'when coercion is used' do
         describe '#[attribute]_localized=' do
-          it 'parses the string and sets the attribute value' do
+          it 'works with global methods' do
             model.test_coerce_float_localized = "54,9"
             expect(model.test_coerce_float).to be_a Float
             expect(model.test_coerce_float).to eq 54.9
@@ -61,6 +61,12 @@ module LocalizeDecimal
             model.test_coerce_big_decimal_localized = "102,6"
             expect(model.test_coerce_big_decimal).to be_a BigDecimal
             expect(model.test_coerce_big_decimal).to eq BigDecimal("102.6")
+          end
+
+          it 'works with instance methods' do
+            model.test_custom_coerce_localized = "13,8"
+            expect(model.test_custom_coerce).to be_a String
+            expect(model.test_custom_coerce).to eq "8.31"
           end
         end
       end

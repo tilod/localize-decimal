@@ -21,7 +21,7 @@ module LocalizeDecimal
           if coerce
             define_method "#{attribute}_localized=" do |value|
               localized_value = value.to_s.tr(localized_number_separator, ".")
-              send("#{attribute}=", send(coerce.to_s, localized_value))
+              send("#{attribute}=", send(coerce, localized_value))
             end
           else
             define_method "#{attribute}_localized=" do |value|

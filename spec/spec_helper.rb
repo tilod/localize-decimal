@@ -33,11 +33,17 @@ class TestClass
   include LocalizeDecimal::Concern
 
   attr_accessor :test_decimal, :test_decimal_2,
-                :test_coerce_float, :test_coerce_big_decimal
+                :test_coerce_float, :test_coerce_big_decimal,
+                :test_custom_coerce
 
   localize_decimal :test_decimal, :test_decimal_2
-  localize_decimal :test_coerce_float, coerce: Float
-  localize_decimal :test_coerce_big_decimal, coerce: BigDecimal
+  localize_decimal :test_coerce_float, coerce: :Float
+  localize_decimal :test_coerce_big_decimal, coerce: :BigDecimal
+  localize_decimal :test_custom_coerce, coerce: :reverse_value
 
   validates :test_decimal_localized, localized_decimal: true
+
+  def reverse_value(value)
+    value.reverse
+  end
 end
