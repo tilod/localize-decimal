@@ -121,7 +121,10 @@ with a dot `.` as decimal separator.
 
 ### Validator
 
-The LocalizeDecimal validator can be used as every other ActiveModel
+The Validator checks for the format of the passed string. It allows negative
+numbers. When the validation fails, it adds the `:not_a_number` error message to
+the localized field (or the error message that is passed as `message: "..."`
+option). The validator can be used the same way as every other ActiveModel
 validator.
 
 ```ruby
@@ -149,8 +152,7 @@ Please note that the validation must be defined for the localized attribute
 
 __Validator TODO:__
 
-  - support negative numbers
-  - implement options supported by numericality validator
+implement options supported by numericality validator
 
 
 ## Contributing

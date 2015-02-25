@@ -4,10 +4,9 @@ RSpec.describe LocalizedDecimalValidator do
   let(:model) { TestClass.new }
 
   context 'with I18n configured' do
-    before { allow(I18n)
-               .to receive(:t)
-               .with("number.format.separator", default: ".")
-               .and_return "," }
+    before { allow(I18n).to receive(:t)
+                        .with("number.format.separator", default: ".")
+                        .and_return "," }
 
     it 'allows numbers without separator' do
       model.test_decimal_localized = "12"
@@ -16,6 +15,11 @@ RSpec.describe LocalizedDecimalValidator do
 
     it 'allows numbers with correct separator' do
       model.test_decimal_localized = "11,4"
+      expect(model).to be_valid
+    end
+
+    it 'allows negative numbers' do
+      model.test_decimal_localized = "-91,7"
       expect(model).to be_valid
     end
 
@@ -40,14 +44,12 @@ RSpec.describe LocalizedDecimalValidator do
 
     it 'has a translated error message' do
       # TODO Is there a better way to stub this? That's awful...
-      allow(I18n)
-        .to receive(:translate)
-        .with(:test_class, {:scope=>[:activemodel, :models], :count=>1, :default=>["Test class"]})
-        .and_call_original
-      allow(I18n)
-        .to receive(:translate)
-        .with(any_args)
-        .and_return("test error message")
+      allow(I18n).to receive(:translate)
+                 .with(:test_class, {:scope=>[:activemodel, :models], :count=>1, :default=>["Test class"]})
+                 .and_call_original
+      allow(I18n).to receive(:translate)
+                 .with(any_args)
+                 .and_return("test error message")
 
       model.test_decimal_localized = "wrong"
       expect(model).not_to be_valid

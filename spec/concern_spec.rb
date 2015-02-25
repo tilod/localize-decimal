@@ -6,10 +6,9 @@ module LocalizeDecimal
 
 
     context 'with I18n configured' do
-      before { allow(I18n)
-                 .to receive(:t)
-                 .with("number.format.separator", default: ".")
-                 .and_return "," }
+      before { allow(I18n).to receive(:t)
+                          .with("number.format.separator", default: ".")
+                          .and_return "," }
 
       describe '.localize_decimal' do
         it 'generates a localized getter for the attribute' do
