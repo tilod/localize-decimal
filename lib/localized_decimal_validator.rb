@@ -1,13 +1,14 @@
 class LocalizedDecimalValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     number_separator = I18n.t "number.format.separator", default: "."
+    value_string     = value.to_s
 
-    unless value =~ /\A\-?\d+(?:#{number_separator}\d+)?\Z/
+    unless value_string =~ /\A\-?\d+(?:#{number_separator}\d+)?\Z/
       record.errors.add attribute, (options[:message] || :not_a_number)
       return
     end
 
-    decimal = BigDecimal(value.to_s.tr(number_separator, "."))
+    decimal = BigDecimal(value_string.tr(number_separator, "."))
 
     # equal_to
     #

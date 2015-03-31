@@ -6,8 +6,13 @@ RSpec.describe LocalizedDecimalValidator do
   context 'with translations' do
     before { I18n.locale = :de }
 
-    it 'allows numbers without separator' do
+    it 'allows numbers without separator as string' do
       model.test_decimal_localized = "12"
+      expect(model).to be_valid
+    end
+
+    it 'allows number without separator as integer' do
+      model.test_decimal_localized = 8
       expect(model).to be_valid
     end
 
@@ -30,6 +35,11 @@ RSpec.describe LocalizedDecimalValidator do
     it 'allows . as separator too (this is not intentional, but preventing '\
        'this would bloat the setter method)' do
       model.test_decimal_localized = "0.75"
+      expect(model).to be_valid
+    end
+
+    it 'allows numbers with separators as float' do
+      model.test_decimal_localized = 56.0
       expect(model).to be_valid
     end
 
