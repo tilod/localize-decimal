@@ -1,7 +1,10 @@
-require "localize_decimal"
+require 'localize_decimal'
 
-require "bigdecimal"
-require "pry"
+require 'bigdecimal'
+require 'pry'
+
+I18n.load_path = Dir['spec/translations.yml']
+I18n.backend.load_translations
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

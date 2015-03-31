@@ -121,11 +121,10 @@ with a dot `.` as decimal separator.
 
 ### Validator
 
-The Validator checks for the format of the passed string. It allows negative
-numbers. When the validation fails, it adds the `:not_a_number` error message to
-the localized field (or the error message that is passed as `message: "..."`
-option). The validator can be used the same way as every other ActiveModel
-validator.
+The Validator checks for the format of the passed string. When the validation
+fails, it adds the `:not_a_number` error message to the localized field (or the
+error message that is passed as `message: "..."` option). The validator can be
+used the same way as every other ActiveModel validator.
 
 ```ruby
 # == Schema Information
@@ -149,10 +148,17 @@ end
 Please note that the validation must be defined for the localized attribute
 (`price_localized` in the example above) and not for the attribute itself.
 
+The validator supports the options of the `numericality` validator of
+ActiveModel:
 
-__Validator TODO:__
+  - `greater_than`
+  - `greater_than_or_equal_to`
+  - `equal_to`
+  - `less_than`
+  - `less_than_or_equal_to`
 
-implement options supported by numericality validator
+The validator does _not_ support the `only_integer`, `odd` and `even` options
+since this simply doesn't make sense for a decimal number.
 
 
 ## Contributing

@@ -1,0 +1,20 @@
+en:
+  activemodel:
+    models:
+      test_class: Test Class
+
+de:
+  number:
+    format:
+      separator: ","
+  activemodel:
+    models:
+      test_class: Test Class
+    errors:
+      messages:
+        not_a_number: not a number error message
+        equal_to: equal to error message %{count}
+        greater_than: greater than error message %{count}
+        greater_than_or_equal_to: greater than or equal to error message %{count}
+        less_than: less than error message %{count}
+        less_than_or_equal_to: less than or equal to error message %{count}

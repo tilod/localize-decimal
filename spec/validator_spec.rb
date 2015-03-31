@@ -3,10 +3,8 @@ require 'spec_helper'
 RSpec.describe LocalizedDecimalValidator do
   let(:model) { TestClass.new }
 
-  context 'with I18n configured' do
-    before { allow(I18n).to receive(:t)
-                        .with("number.format.separator", default: ".")
-                        .and_return "," }
+  context 'with translations' do
+    before { I18n.locale = :de }
 
     it 'allows numbers without separator' do
       model.test_decimal_localized = "12"
@@ -43,33 +41,162 @@ RSpec.describe LocalizedDecimalValidator do
     end
 
     it 'has a translated error message' do
-      # TODO Is there a better way to stub this? That's awful...
-      allow(I18n).to receive(:translate)
-                 .with(:test_class, {:scope=>[:activemodel, :models], :count=>1, :default=>["Test class"]})
-                 .and_call_original
-      allow(I18n).to receive(:translate)
-                 .with(any_args)
-                 .and_return("test error message")
-
       model.test_decimal_localized = "wrong"
       expect(model).not_to be_valid
-      expect(model.errors[:test_decimal_localized]).to eq ["test error message"]
+      expect(model.errors[:test_decimal_localized])
+      .to eq ["not a number error message"]
+    end
+
+    shared_examples_for :being_valid do
+      it 'is valid' do
+        expect(model).to be_valid
+      end
+    end
+
+    shared_examples_for :having_an_error_on_the_field do
+      it 'is not valid' do
+        expect(model).not_to be_valid
+        expect(model.errors[:test_attribute].size).to eq 1
+      end
+
+      it 'includes the options value in the error message' do
+        expect(model).not_to be_valid
+        expect(model.errors[:test_attribute].first).to match "3"
+      end
+    end
+
+    describe 'supports the :equal_to option' do
+      class TestEqualTo
+        include ActiveModel::Model
+
+        attr_accessor :test_attribute
+        validates :test_attribute, localized_decimal: { equal_to: 3 }
+      end
+
+      let(:model) { TestEqualTo.new }
+
+      context 'when value equals the option' do
+        before { model.test_attribute = "3" }
+        it_behaves_like :being_valid
+      end
+
+      context 'when value does not equal the option' do
+        before { model.test_attribute = "4,1" }
+        it_behaves_like :having_an_error_on_the_field
+      end
+    end
+
+    describe 'supports the :greater_than option' do
+      class TestGreaterThan
+        include ActiveModel::Model
+
+        attr_accessor :test_attribute
+        validates :test_attribute, localized_decimal: { greater_than: 3 }
+      end
+
+      let(:model) { TestGreaterThan.new }
+
+      context 'when value equals the option' do
+        before { model.test_attribute = "3" }
+        it_behaves_like :having_an_error_on_the_field
+      end
+
+      context 'when value is less than the option' do
+        before { model.test_attribute = "2,6" }
+        it_behaves_like :having_an_error_on_the_field
+      end
+
+      context 'when value is greater than the option' do
+        before { model.test_attribute = "4,1" }
+        it_behaves_like :being_valid
+      end
+    end
+
+    describe 'supports the :greater_than_or_equal_to option' do
+      class TestGreaterThanOrEqualTo
+        include ActiveModel::Model
+
+        attr_accessor :test_attribute
+        validates :test_attribute, localized_decimal: { greater_than_or_equal_to: 3 }
+      end
+
+      let(:model) { TestGreaterThanOrEqualTo.new }
+
+      context 'when value equals the option' do
+        before { model.test_attribute = "3" }
+        it_behaves_like :being_valid
+      end
+
+      context 'when value is less than the option' do
+        before { model.test_attribute = "2,6" }
+        it_behaves_like :having_an_error_on_the_field
+      end
+
+      context 'when value is greater than the option' do
+        before { model.test_attribute = "4,1" }
+        it_behaves_like :being_valid
+      end
+    end
+
+    describe 'supports the :less_than option' do
+      class TestLessThan
+        include ActiveModel::Model
+
+        attr_accessor :test_attribute
+        validates :test_attribute, localized_decimal: { less_than: 3 }
+      end
+
+      let(:model) { TestLessThan.new }
+
+      context 'when value equals the option' do
+        before { model.test_attribute = "3" }
+        it_behaves_like :having_an_error_on_the_field
+      end
+
+      context 'when value is less than the option' do
+        before { model.test_attribute = "2,6" }
+        it_behaves_like :being_valid
+      end
+
+      context 'when value is greater than the option' do
+        before { model.test_attribute = "4,1" }
+        it_behaves_like :having_an_error_on_the_field
+      end
+    end
+
+    describe 'supports the :less_than_or_equal_to option' do
+      class TestLessThanOrEqualTo
+        include ActiveModel::Model
+
+        attr_accessor :test_attribute
+        validates :test_attribute, localized_decimal: { less_than_or_equal_to: 3 }
+      end
+
+      let(:model) { TestLessThanOrEqualTo.new }
+
+      context 'when value equals the option' do
+        before { model.test_attribute = "3" }
+        it_behaves_like :being_valid
+      end
+
+      context 'when value is less than the option' do
+        before { model.test_attribute = "2,6" }
+        it_behaves_like :being_valid
+      end
+
+      context 'when value is greater than the option' do
+        before { model.test_attribute = "4,1" }
+        it_behaves_like :having_an_error_on_the_field
+      end
     end
   end
 
+  context 'without translations' do
+    before { I18n.locale = :en }
 
-  context 'without I18n configured' do
     it 'uses . as separator' do
       model.test_decimal_localized = "389.01"
       expect(model).to be_valid
-    end
-
-    describe 'the error message' do
-      it 'is :not_a_number' do
-        model.test_decimal_localized = "wrong"
-        expect(model).not_to be_valid
-        expect(model.errors[:test_decimal_localized]).to eq ["is not a number"]
-      end
     end
   end
 end
